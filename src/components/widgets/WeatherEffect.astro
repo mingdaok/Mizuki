@@ -1,0 +1,149 @@
+---
+---
+<canvas id="weather-canvas" class="fixed top-0 left-0 w-screen h-screen pointer-events-none z-[100]"></canvas>
+
+<script>
+    const canvas = document.getElementById('weather-canvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+    
+    let effect = localStorage.getItem('weather-effect') || 'none';
+    let particles: any[] = [];
+    let animationId: number;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function initParticles() {
+        particles = [];
+        const count = effect === 'rain' ? 100 : effect === 'snow' ? 100 : effect === 'sakura' ? 40 : 0;
+        
+        for (let i = 0; i < count; i++) {
+            particles.push(createParticle(true));
+        }
+    }
+
+    function createParticle(randomY = false) {
+        let p: any = {
+            x: Math.random() * width,
+            y: randomY ? Math.random() * height : -20,
+            speedY: 0,
+            speedX: 0,
+            size: 0,
+        };
+
+        if (effect === 'snow') {
+            p.size = Math.random() * 3 + 1;
+            p.speedY = Math.random() * 1 + 0.5;
+            p.speedX = Math.random() * 1 - 0.5;
+            p.opacity = Math.random() * 0.5 + 0.3;
+        } else if (effect === 'rain') {
+            p.size = Math.random() * 1.5 + 0.5;
+            p.speedY = Math.random() * 10 + 10;
+            p.speedX = Math.random() * 2 + 1; // Slanted rain
+            p.opacity = Math.random() * 0.4 + 0.2;
+            p.length = Math.random() * 20 + 10;
+        } else if (effect === 'sakura') {
+            p.size = Math.random() * 8 + 6;
+            p.speedY = Math.random() * 1.5 + 1;
+            p.speedX = Math.random() * 2 - 1;
+            p.angle = Math.random() * 360;
+            p.spin = Math.random() * 0.1 - 0.05;
+            p.sway = Math.random() * 2;
+            p.swaySpeed = Math.random() * 0.05 + 0.01;
+            p.opacity = Math.random() * 0.5 + 0.5;
+        }
+        return p;
+    }
+
+    function draw() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, width, height);
+
+        if (effect === 'none') {
+            return;
+        }
+
+        ctx.beginPath();
+        for (let i = 0; i < particles.length; i++) {
+            let p = particles[i];
+
+            if (effect === 'snow') {
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                ctx.moveTo(p.x, p.y);
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            } else if (effect === 'rain') {
+                ctx.strokeStyle = `rgba(174, 194, 224, ${p.opacity})`;
+                ctx.lineWidth = p.size;
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p.x + p.speedX * (p.length / p.speedY), p.y + p.length);
+            } else if (effect === 'sakura') {
+                ctx.save();
+                ctx.translate(p.x + Math.sin(p.sway) * 20, p.y);
+                ctx.rotate(p.angle);
+                ctx.fillStyle = `rgba(255, 183, 197, ${p.opacity})`;
+                // Sakura petal shape
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-p.size, -p.size, -p.size * 2, p.size, 0, p.size * 1.5);
+                ctx.bezierCurveTo(p.size * 2, p.size, p.size, -p.size, 0, 0);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            p.y += p.speedY;
+            p.x += p.speedX;
+            
+            if (effect === 'sakura') {
+                p.angle += p.spin;
+                p.sway += p.swaySpeed;
+            }
+
+            // Reset particle if it goes out of bounds
+            if (p.y > height + 20 || p.x > width + 20 || p.x < -20) {
+                particles[i] = createParticle(false);
+                if (p.x > width + 20) particles[i].x = -10;
+                if (p.x < -20) particles[i].x = width + 10;
+            }
+        }
+        
+        if (effect === 'snow') {
+            ctx.fill();
+        } else if (effect === 'rain') {
+            ctx.stroke();
+        }
+
+        animationId = requestAnimationFrame(draw);
+    }
+
+    function startAnimation() {
+        if (animationId) cancelAnimationFrame(animationId);
+        initParticles();
+        if (effect !== 'none') {
+            draw();
+        } else {
+            if (ctx) ctx.clearRect(0, 0, width, height);
+        }
+    }
+
+    window.addEventListener('weather-change', (e: any) => {
+        effect = e.detail;
+        startAnimation();
+    });
+
+    // Handle view transitions in Astro
+    document.addEventListener('astro:page-load', () => {
+        effect = localStorage.getItem('weather-effect') || 'none';
+        startAnimation();
+    });
+
+    // Initial start
+    startAnimation();
+</script>

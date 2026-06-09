@@ -191,7 +191,7 @@ export class BackToTopHandler {
 		// 计算 --banner-height-extend
 		// 需要是 4 的倍数以避免模糊文本
 		let offset = Math.floor(
-			window.innerHeight * (30 / 100), // BANNER_HEIGHT_EXTEND
+			window.innerHeight * (15 / 100), // BANNER_HEIGHT_EXTEND
 		);
 		offset = offset - (offset % 4);
 		document.documentElement.style.setProperty(

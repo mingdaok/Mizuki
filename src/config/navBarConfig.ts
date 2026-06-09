@@ -141,21 +141,15 @@ export const navBarConfig: NavBarConfig = {
 			children: [
 				{
 					name: "GitHub",
-					url: "https://github.com/LyraVoid/Mizuki",
+					url: "https://github.com/mingdaok",
 					external: true, // 外部链接，新标签页打开
 					icon: "fa7-brands:github",
 				},
 				{
 					name: "Bilibili",
-					url: "https://space.bilibili.com/701864046",
+					url: "https://space.bilibili.com/38302092?spm_id_from=333.1007.0.0",
 					external: true,
 					icon: "fa7-brands:bilibili",
-				},
-				{
-					name: "Gitee",
-					url: "https://gitee.com/matsuzakayuki/Mizuki",
-					external: true,
-					icon: "mdi:git",
 				},
 			],
 		},
@@ -177,15 +171,16 @@ export const navBarConfig: NavBarConfig = {
 					icon: "material-symbols:book",
 				},
 				{
-					name: "Gallery",
+					name: "照片墙",
 					url: "/albums/",
 					icon: "material-symbols:photo-library",
 				},
+
 				{
-					name: "Devices",
-					url: "/devices/",
-					icon: "material-symbols:devices",
-					external: false, // 内部链接，当前页导航
+					name: "管理后台",
+					url: "/keystatic",
+					icon: "material-symbols:admin-panel-settings",
+					external: true, // 外部链接，新标签打开，防止丢失阅读进度
 				},
 			],
 		},

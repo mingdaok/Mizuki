@@ -1,8 +1,10 @@
 @reference "tailwindcss";
 
 .custom-md {
+  @apply text-[1.15rem] leading-loose;
+
   h1 {
-    @apply text-3xl;
+    @apply text-4xl;
   }
 
   :is(h1, h2, h3, h4, h5, h6) {

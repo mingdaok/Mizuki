@@ -242,7 +242,7 @@ html {
   }
 
   .card-base {
-    @apply rounded-(--radius-large) overflow-hidden bg-(--card-bg) transition-colors duration-150;
+    @apply rounded-(--radius-large) overflow-hidden bg-(--card-bg) backdrop-blur-md transition-colors duration-150;
   }
   .card-base-transparent {
     @apply rounded-(--radius-large) overflow-hidden bg-(--card-bg-transparent) backdrop-blur-sm transition-colors duration-150;
@@ -739,4 +739,28 @@ html {
 }
 :root:not(.dark) .custom-md spoiler {
   --_spoiler-mask: color-mix(in oklch, var(--primary) 55%, white 45%);
+}
+
+/* 自定义全局半透明背景图 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  /* 背景图片路径 */
+  background-image: url('/assets/custom-banner/global-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* 透明度设置：0.4 表示 40% 的透明度 */
+  opacity: 0.4;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 适配深色模式下的透明度 */
+:root.dark body::before {
+  opacity: 0.25;
 }

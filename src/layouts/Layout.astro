@@ -3,10 +3,11 @@ import { PageProgressBar } from "@components/control/PageProgressBar";
 import Pio from "@components/features/pio/Pio.astro";
 import ConfigCarrier from "@components/misc/ConfigCarrier.astro";
 import MusicPlayer from "@components/widgets/music-player/MusicPlayer.svelte";
+import WeatherEffect from "@components/widgets/WeatherEffect.astro";
 import { pioConfig, profileConfig, siteConfig } from "@/config";
 
-const BANNER_HEIGHT = 35;
-const BANNER_HEIGHT_EXTEND = 30;
+const BANNER_HEIGHT = 5;
+const BANNER_HEIGHT_EXTEND = 15;
 const BANNER_HEIGHT_HOME = BANNER_HEIGHT + BANNER_HEIGHT_EXTEND;
 
 import { PAGE_WIDTH } from "../constants/constants";
@@ -17,6 +18,7 @@ import "../styles/wallpaper-navbar-transparent.css";
 import "../styles/fancybox-custom.css";
 import "../styles/expressive-code.css";
 import "../styles/panel-animations.css";
+import "../styles/click-ripple.css";
 
 // 导入新提取的 Head 组件
 import AnalyticsScripts from "./partials/AnalyticsScripts.astro";
@@ -255,6 +257,9 @@ if (siteConfig.font) {
 		<!-- 页面顶部渐变高光效果 - 只在full和semifull模式下显示 -->
 		{shouldShowTopHighlight && <div class="top-gradient-highlight" />}
 
+		<!-- 天气特效画板 -->
+		<WeatherEffect />
+
 		<ConfigCarrier />
 		<PageProgressBar
 			enable={siteConfig.pageProgressBar?.enable ?? false}
@@ -355,4 +360,14 @@ if (siteConfig.font) {
 <!-- 主题切换综合性能优化器（包含代码块优化、重型元素优化、性能诊断） -->
 <script>
 	import "../scripts/theme-optimizer.js";
+</script>
+
+<!-- 全局点击波纹特效 -->
+<script>
+	import "../scripts/click-ripple.js";
+</script>
+
+<!-- 鼠标拖尾流星特效 -->
+<script>
+	import "../scripts/cursor-trail.js";
 </script>
