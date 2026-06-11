@@ -45,7 +45,16 @@ export default config({
         hideHomeContent: fields.checkbox({ label: '隐藏首页摘要 (HideHomeContent)', defaultValue: false }),
         alias: fields.text({ label: '文章别名 (Alias)' }),
         permalink: fields.text({ label: '固定链接 (Permalink)' }),
-        content: fields.markdoc({ label: '正文内容 (Content)', extension: 'md' }),
+        content: fields.markdoc({ 
+          label: '正文内容 (Content)', 
+          extension: 'md',
+          options: {
+            image: {
+              directory: 'public/images/posts',
+              publicPath: '/images/posts/'
+            }
+          }
+        }),
       },
     }),
     anime: collection({
