@@ -4,7 +4,7 @@ export default config({
   // 开发环境下使用本地文件存储，生产环境下使用 GitHub 存储
   storage: process.env.NODE_ENV === 'development' ? { kind: 'local' } : {
     kind: 'github',
-    repo: 'YOUR_GITHUB_USERNAME/YOUR_REPO_NAME' // 注意：部署到线上前请替换为您的仓库名
+    repo: 'mingdaok/My-blog' // 注意：部署到线上前请替换为您的仓库名
   },
   singletons: {
     about: singleton({
