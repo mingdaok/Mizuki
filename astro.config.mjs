@@ -40,7 +40,7 @@ export default defineConfig({
 	base: "/",
 	trailingSlash: "ignore",
 
-	output: "hybrid",
+	output: "static",
 	adapter: vercel(),
 
 	image: {
