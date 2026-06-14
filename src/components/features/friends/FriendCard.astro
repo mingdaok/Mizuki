@@ -13,7 +13,16 @@ interface Props {
 }
 
 const { friend } = Astro.props;
-const hostname = new URL(friend.siteurl).hostname;
+let urlStr = friend.siteurl;
+if (!urlStr.startsWith('http://') && !urlStr.startsWith('https://')) {
+  urlStr = 'https://' + urlStr;
+}
+let hostname = urlStr;
+try {
+  hostname = new URL(urlStr).hostname;
+} catch (e) {
+  console.error("Invalid URL:", urlStr);
+}
 ---
 
 <div
@@ -43,7 +52,7 @@ const hostname = new URL(friend.siteurl).hostname;
 					{friend.title}
 				</h3>
 				<a
-					href={friend.siteurl}
+					href={urlStr}
 					target="_blank"
 					rel="noopener noreferrer"
 					class="text-xs text-black/50 dark:text-white/50 hover:text-[var(--primary)] truncate block transition-colors duration-200"
@@ -74,7 +83,7 @@ const hostname = new URL(friend.siteurl).hostname;
 		<!-- 操作按钮 -->
 		<div class="flex gap-2">
 			<a
-				href={friend.siteurl}
+				href={urlStr}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[var(--primary)] text-white hover:bg-[var(--primary)]/90 active:scale-95 transition-all duration-200 font-medium text-sm"
@@ -96,7 +105,7 @@ const hostname = new URL(friend.siteurl).hostname;
 			</a>
 			<button
 				class="copy-link-btn px-3 py-2 rounded-lg bg-[var(--btn-regular-bg)] hover:bg-[var(--btn-regular-bg-hover)] active:scale-95 transition-all duration-200 text-black/70 dark:text-white/70"
-				data-url={friend.siteurl}
+				data-url={urlStr}
 				title={i18n(I18nKey.friendsCopyLink)}
 			>
 				<svg
